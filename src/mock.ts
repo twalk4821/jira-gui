@@ -1,4 +1,6 @@
-export const MOCK_DATA = [
+import { JiraIssue } from "./types/index";
+
+export const MOCK_DATA: JiraIssue[] = [
     {
         "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
         "id": "4395387",

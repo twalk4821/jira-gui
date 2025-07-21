@@ -1,9 +1,9 @@
 {
   "name": "jira-gui",
   "version": "1.0.0",
-  "main": "main.js",
+  "main": "dist/main.js",
   "scripts": {
-    "build": "webpack --mode development",
+    "build": "tsc && webpack --mode development",
     "watch": "webpack --mode development --watch",
     "start": "electron ."
   },
@@ -15,15 +15,26 @@
     "@babel/core": "^7.28.0",
     "@babel/preset-env": "^7.28.0",
     "@babel/preset-react": "^7.27.1",
+    "@babel/preset-typescript": "^7.27.1",
+    "@types/node": "^24.0.15",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
     "babel-loader": "^10.0.0",
     "css-loader": "^7.1.2",
     "electron": "^37.2.3",
     "style-loader": "^4.0.0",
+    "ts-loader": "^9.5.2",
+    "tsc": "^2.0.4",
+    "typescript": "^5.8.3",
     "webpack": "^5.100.2",
     "webpack-cli": "^6.0.1"
   },
   "dependencies": {
+    "@types/electron": "^1.6.12",
+    "axios": "^1.10.0",
     "bootstrap": "^5.3.7",
+    "chalk": "^5.4.1",
+    "dotenv": "^17.2.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   }
