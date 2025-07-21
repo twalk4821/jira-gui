@@ -81,7 +81,8 @@ function App() {
       setError(null);
       try {
         const jqlQuery = "project = WDY AND status in (\"To Do\", \"In Progress\") ORDER BY \"Start Date\" ASC";
-        const fetchedTimeline = await window.electron.ipcRenderer.getTimelineIssues(jqlQuery);
+        // const fetchedTimeline = await window.electron.ipcRenderer.getTimelineIssues(jqlQuery);
+
         const timeline = await getTimeline()
         setTimeline(timeline);
       } catch (err: any) {
