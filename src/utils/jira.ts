@@ -24,8 +24,6 @@ const client = axios.create({
  * console.log(issue);
  */
 export async function getIssue(issueKey: string): Promise<JiraIssue>{
-  console.log('Base URL:', process.env.JIRA_BASE_URL);
-  // return Promise.resolve({} as JiraIssue);
   const res = await client.get(`/rest/api/2/issue/${issueKey}`);
   return res.data;
 }

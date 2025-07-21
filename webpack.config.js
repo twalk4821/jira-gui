@@ -6,6 +6,7 @@ module.exports = {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist'),
   },
+  devtool: 'source-map', // Use source-map for CSP compatibility
   module: {
     rules: [
       {

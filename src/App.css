@@ -1,0 +1,131 @@
+
+.waterfall-chart {
+  display: flex;
+  flex-direction: column;
+  overflow-x: auto;
+}
+.chart-header {
+  display: flex;
+}
+.chart-header-gutter {
+  width: 165px;
+  border-right: 1px solid #ccc;
+  padding: 20px 25px;
+  font-weight: bold;
+}
+.chart-header-periods {
+  width: 2275px; /* 13 periods * 175px/period */
+  display: flex;
+  flex-direction: row;
+  border-bottom: 1px solid #ccc;
+}
+.chart-header-item {
+  width: 175px;
+  border-right: 1px solid #ccc;
+  padding: 20px 25px;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.chart-header-item.current-period {
+  background-color: #e0f7fa; /* Light blue background */
+  border: 2px solid #00bcd4; /* Cyan border */
+}
+.chart-body {
+  display: flex;
+  flex-direction: column;
+  width: 2275px; /* 13 periods * 175px/period */
+}
+.chart-row {
+  display: flex;
+  border-bottom: 1px solid #eee;
+  height: 80px;
+  padding: 10px;
+}
+.chart-row-label {
+  width: 150px;
+  padding: 10px;
+  font-weight: bold;
+}
+.chart-row-bars {
+  flex: 1;
+  position: relative;
+}
+.chart-bar {
+  position: absolute;
+  height: 60px;
+  background-color: #007bff;
+  border-radius: 5px;
+  color: white;
+  padding: 2px 5px;
+  font-size: 12px;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: initial;
+  cursor: pointer;
+}
+
+.chart-bar-completed {
+  background-color: #919191; /* Green color for completed issues */
+  opacity: 0.7;
+}
+
+.chart-bar-in-progress {
+  background-color: #28a745; /* Green color for in-progress issues */
+}
+
+.chart-column-highlight {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  background-color: rgba(0, 188, 212, 0.1); /* Light cyan with transparency */
+  z-index: 0;
+}
+
+.issue-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.issue-popup-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  max-width: 500px;
+  width: 90%;
+  position: relative;
+  max-height: 80vh; /* Set a max height relative to viewport height */
+  overflow-y: auto; /* Enable vertical scrolling */
+}
+
+.issue-popup-content button {
+  margin-top: 15px;
+  padding: 8px 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.issue-popup-content button:hover {
+  background-color: #0056b3;
+}
+
+.chart-column-highlight {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  background-color: rgba(0, 188, 212, 0.1); /* Light cyan with transparency */
+  z-index: 0;
+}

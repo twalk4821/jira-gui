@@ -13,18 +13,21 @@ const JiraCustomFields = {
   EndDate: 'customfield_14946',
 };
 
+process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = 'true';
+
 function createWindow () {
   const win = new BrowserWindow({
-    width: 800,
-    height: 600,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
       nodeIntegration: false,
-    }
+    },
+    show: false,
   })
 
   win.loadFile('index.html')
+  win.maximize()
+  win.show()
 }
 
 app.whenReady().then(() => {
