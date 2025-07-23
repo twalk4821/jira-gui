@@ -1,18 +1,52 @@
 import axios from 'axios';
 import { JiraFieldsItem, JiraIssue } from '../types';
-import dotenv from 'dotenv';
+// import dotenv from 'dotenv';
 
-dotenv.config();
+// dotenv.config();
+
+const JIRA_BASE_URL = 'https://jira.sie.sony.com/'
+const JIRA_EMAIL = 'tyler.walker@sony.com'
+const JIRA_API_TOKEN = ''
+const GITHUB = ''
+const GITHUB2 = ''
 
 const client = axios.create({
-  baseURL: process.env.JIRA_BASE_URL,
+  baseURL: JIRA_BASE_URL,
   headers: {
     'Access-Control-Allow-Credentials': 'true',
     'Accept': 'application/json',
     'Content-Type': 'application/json',
-    'Authorization': `Bearer ${process.env.JIRA_API_TOKEN}`,
+    'Authorization': `Bearer ${JIRA_API_TOKEN}`,
   },
 });
+
+const owner = "SIE-Private";
+const repo = "rnps-explore-hub";
+const baseBranch = "feat/custom-presence-alpha";
+
+export async function listPullRequests() {
+  try {
+    const response = await axios.get(
+      `https://github.sie.sony.com/api/v3/repos/${owner}/${repo}/pulls`,
+      {
+        headers: {
+          Authorization: `token ${GITHUB2}`,
+        },
+        params: {
+          state: "all", // or 'open', 'closed'
+          base: baseBranch
+        }
+      }
+    );
+
+    const pullRequests = response.data;
+    return pullRequests;
+  } catch (error: any) {
+    console.error("Error fetching PRs:", error.response?.data || error.message);
+  }
+}
+
+listPullRequests();
 
 /**
  * Fetches a JIRA issue by its key.

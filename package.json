@@ -1,11 +1,21 @@
 {
   "name": "jira-gui",
   "version": "1.0.0",
-  "main": "dist/main.js",
+  "main": "build/main.js",
   "scripts": {
     "build": "tsc && webpack --mode development",
     "watch": "webpack --mode development --watch",
-    "start": "electron ."
+    "start": "electron .",
+    "dist": "electron-builder"
+  },
+  "build": {
+    "files": [
+      "build/**/*",
+      "dist/**/*",
+      "node_modules/**/*",
+      "package.json",
+      "index.html"
+    ]
   },
   "keywords": [],
   "author": "",
@@ -22,6 +32,7 @@
     "babel-loader": "^10.0.0",
     "css-loader": "^7.1.2",
     "electron": "^37.2.3",
+    "electron-builder": "^26.0.12",
     "style-loader": "^4.0.0",
     "ts-loader": "^9.5.2",
     "tsc": "^2.0.4",

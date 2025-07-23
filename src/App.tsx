@@ -4,6 +4,7 @@ import { JiraIssue } from './types';
 import { MOCK_DATA } from './mock';
 import { parseJiraToReact } from './utils/jiraReactParser';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { listPullRequests, searchIssues } from './utils';
 
 interface Issue {
   key: string;
@@ -35,7 +36,9 @@ interface Timeline {
  */
 const getTimeline = async () => {
   try {
-    const issues = MOCK_DATA.filter(issue => issue.key.includes("WDY"));
+    const jqlQuery = `"Epic Link" = SFG-62 AND project in (WDY, WDYBUG)`;
+    const issues = await searchIssues(jqlQuery);
+    // const issues = MOCK_DATA.filter(issue => issue.key.includes("WDY"));
     const timeline: any = {};
 
     let currentDate = new Date('2025-06-12T00:00:00.000Z');
@@ -46,6 +49,7 @@ const getTimeline = async () => {
       const periodStart = new Date(currentDate);
       const periodEnd = new Date(currentDate);
       periodEnd.setDate(currentDate.getDate() + 13);
+      periodEnd.setHours(23, 59, 0, 0);
 
       const sprintName = `${sprintMajor}.${sprintMinor}`;
       const periodKey = `${sprintName} - ${periodStart.toISOString()} - ${periodEnd.toISOString()}`;
@@ -145,8 +149,8 @@ const SummaryStats = ({ issues, deliveryTarget }: { issues: JiraIssue[], deliver
       </div>
       <div className="stat">
         <strong>Percentage Points Completed:</strong> <span className={`stat-value ${
-          parseFloat(percentagePointsCompleted) > 66 ? 'stat-value-success' :
-          parseFloat(percentagePointsCompleted) >= 33 ? 'stat-value-warning' :
+          parseFloat(String(percentagePointsCompleted)) > 75 ? 'stat-value-success' :
+          parseFloat(String(percentagePointsCompleted)) >= 33 ? 'stat-value-warning' :
           ''
         }`}>
           {percentagePointsCompleted}%
@@ -158,6 +162,42 @@ const SummaryStats = ({ issues, deliveryTarget }: { issues: JiraIssue[], deliver
       <div className="stat">
         <strong>Days to Delivery:</strong> <span className="stat-value stat-value-danger">{daysToDelivery}</span>
       </div>
+    </div>
+  );
+};
+
+
+const PullRequestList = ({}: any) => {
+  const [prs, setPrs] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchPRs = async () => {
+      try {
+        const response = await listPullRequests() as any;
+        setPrs(response);
+      } catch (err: any) {
+        console.error('error loading prs')
+      }
+    };
+
+    fetchPRs();
+  }, []);
+
+  if (!prs.length) return <div>Loading PRs...</div>;
+
+  return (
+    <div style={{ marginTop: 25 }}>
+      <h2>Pull Requests</h2>
+      <ul>
+        {prs.map((pr) => (
+          <li key={pr.id}>
+            <a href={pr.html_url} target="_blank" rel="noreferrer">
+              #{pr.number} {pr.title}
+            </a>{" "}
+            – <strong>{pr.state}</strong>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };
@@ -203,10 +243,12 @@ function App() {
 
   const periods = Object.keys(timeline).map(periodKey => {
     const [sprintName, start, end] = periodKey.split(' - ');
-    const formattedPeriod = `${formatDate(new Date(start))} - ${formatDate(new Date(end))}`;
+    const startDate = new Date(start);
+    const endDate = new Date(end);
+    const formattedPeriod = `${formatDate(startDate)} - ${formatDate(endDate)}`;
     const today = new Date();
-    const isCurrentPeriod = today >= new Date(start) && today <= new Date(end);
-    const isDeliveryTarget = deliveryTarget >= new Date(start) && deliveryTarget <= new Date(end);
+    const isCurrentPeriod = today >= startDate && today <= endDate;
+    const isDeliveryTarget = deliveryTarget >= startDate && deliveryTarget <= new Date(end);
 
     const classNames = ['chart-header-item'];
     if (isCurrentPeriod) {
@@ -323,8 +365,8 @@ function App() {
                       <div
                         className="chart-column-highlight"
                         style={{
-                          left: `${(highlightStartDay / totalDays) * 100}%`,
-                          width: `${(highlightDuration / totalDays) * 100}%`,
+                          left: `${(highlightStartDay / totalDays) * 100 + 0.5}%`,
+                          width: `${(highlightDuration / totalDays) * 100 - 1}%`,
                         }}
                       ></div>
                     );
@@ -337,8 +379,8 @@ function App() {
                       <div
                         className="chart-column-highlight delivery-target"
                         style={{
-                          left: `${(highlightStartDay / totalDays) * 100}%`,
-                          width: `${(highlightDuration / totalDays) * 100}%`,
+                          left: `${(highlightStartDay / totalDays) * 100 + 0.5}%`,
+                          width: `${(highlightDuration / totalDays) * 100 - 1}%`,
                         }}
                       ></div>
                     );
@@ -371,6 +413,7 @@ function App() {
               })}
             </div>
           </div>
+          <PullRequestList />
         </div>
       )}
 

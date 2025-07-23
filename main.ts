@@ -18,14 +18,14 @@ process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = 'true';
 function createWindow () {
   const win = new BrowserWindow({
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
+      preload: path.join('./build/preload.js'),
       contextIsolation: true,
       nodeIntegration: false,
     },
     show: false,
   })
 
-  win.loadFile('index.html')
+  win.loadFile('./index.html')
   win.maximize()
   win.show()
 }

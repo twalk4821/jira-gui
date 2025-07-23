@@ -2,9 +2,7 @@
   "compilerOptions": {
     "jsx": "react",
     "target": "es5",
-    "module": "nodenext",
-    "moduleResolution": "NodeNext",
-    "outDir": "dist",
+    "outDir": "build",
     "rootDir": ".",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
@@ -17,6 +15,7 @@
   "include": [
     "src",
     "main.ts",
-    "preload.ts"
+    "preload.ts",
+    "index.html"
   ]
 }
